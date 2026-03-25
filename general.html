@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasnain General Store | Muhammad Hasnain</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+    <!-- Header Section -->
+    <header class="bg-emerald-700 text-white shadow-xl sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                <div class="bg-white p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight">Hasnain General Store</h1>
+                    <p class="text-emerald-100 text-xs font-medium uppercase tracking-widest">Inventory Management System</p>
+                </div>
+            </div>
+            
+            <div class="text-center md:text-right border-t md:border-t-0 md:border-l border-emerald-600 pt-4 md:pt-0 md:pl-6">
+                <p class="text-sm text-emerald-200">Developed By</p>
+                <h2 class="text-xl font-semibold">Muhammad Hasnain</h2>
+                <p class="text-xs bg-emerald-800 px-2 py-1 rounded inline-block mt-1">Web Developer</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Dashboard Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <p class="text-slate-500 text-sm font-medium">Total Items</p>
+                <h3 id="total-items" class="text-3xl font-bold text-slate-800">0</h3>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <p class="text-slate-500 text-sm font-medium">Inventory Value</p>
+                <h3 id="total-value" class="text-3xl font-bold text-emerald-600">Rs. 0</h3>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <p class="text-slate-500 text-sm font-medium">Low Stock Alerts</p>
+                <h3 id="low-stock" class="text-3xl font-bold text-orange-500">0</h3>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Form Card -->
+            <div class="lg:col-span-4">
+                <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+                    <div class="bg-slate-800 p-4">
+                        <h3 id="form-title" class="text-white font-semibold flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-60H6" />
+                            </svg>
+                            Add New Product
+                        </h3>
+                    </div>
+                    <form id="product-form" class="p-6 space-y-4">
+                        <input type="hidden" id="edit-index" value="-1">
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Product Name</label>
+                            <input type="text" id="p-name" required placeholder="e.g. Basmati Rice" 
+                                class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">Price (PKR)</label>
+                                <input type="number" id="p-price" required min="0" placeholder="0.00"
+                                    class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">Stock Qty</label>
+                                <input type="number" id="p-stock" required min="0" placeholder="0"
+                                    class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Category</label>
+                            <select id="p-category" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all">
+                                <option value="Grocery">Grocery</option>
+                                <option value="Beverages">Beverages</option>
+                                <option value="Household">Household</option>
+                                <option value="Personal Care">Personal Care</option>
+                            </select>
+                        </div>
+
+                        <div class="pt-4 flex flex-col gap-2">
+                            <button type="submit" id="submit-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg transition-colors shadow-md active:scale-95">
+                                Save Product
+                            </button>
+                            <button type="button" id="cancel-btn" class="hidden w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 rounded-lg transition-colors">
+                                Cancel Edit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Table Card -->
+            <div class="lg:col-span-8">
+                <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+                    <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                        <h3 class="font-bold text-slate-800">Inventory List</h3>
+                        <div class="relative">
+                            <input type="text" id="search" placeholder="Search products..." class="pl-10 pr-4 py-2 border border-slate-300 rounded-full text-sm focus:ring-2 focus:ring-emerald-500 outline-none w-48 md:w-64">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 absolute left-4 top-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="text-slate-500 text-xs uppercase tracking-wider bg-slate-50">
+                                    <th class="px-6 py-4 font-semibold">Product</th>
+                                    <th class="px-6 py-4 font-semibold text-center">Category</th>
+                                    <th class="px-6 py-4 font-semibold text-right">Price</th>
+                                    <th class="px-6 py-4 font-semibold text-center">Stock</th>
+                                    <th class="px-6 py-4 font-semibold text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-body" class="divide-y divide-slate-100">
+                                <!-- Data rows injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="empty-state" class="hidden p-12 text-center">
+                        <p class="text-slate-400">No products found. Start by adding one!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Custom Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 px-6 py-3 rounded-xl bg-slate-800 text-white shadow-2xl transition-all translate-y-24 opacity-0 z-[100]">
+        Product updated successfully!
+    </div>
+
+    <script>
+        // State Management
+        let products = JSON.parse(localStorage.getItem('gs_inventory')) || [
+            { name: 'National Mixed Pickle', price: 450, stock: 24, category: 'Grocery' },
+            { name: 'Tapal Danedar Tea', price: 890, stock: 5, category: 'Beverages' },
+            { name: 'Surf Excel (1kg)', price: 620, stock: 15, category: 'Household' }
+        ];
+
+        const productForm = document.getElementById('product-form');
+        const inventoryBody = document.getElementById('inventory-body');
+        const submitBtn = document.getElementById('submit-btn');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const editIndexInput = document.getElementById('edit-index');
+        const formTitle = document.getElementById('form-title');
+        const toast = document.getElementById('toast');
+
+        // Functions
+        function saveToStorage() {
+            localStorage.setItem('gs_inventory', JSON.stringify(products));
+            updateDashboard();
+        }
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+
+        function updateDashboard() {
+            const totalItems = products.length;
+            const totalValue = products.reduce((sum, p) => sum + (p.price * p.stock), 0);
+            const lowStockCount = products.filter(p => p.stock <= 5).length;
+
+            document.getElementById('total-items').textContent = totalItems;
+            document.getElementById('total-value').textContent = `Rs. ${totalValue.toLocaleString()}`;
+            document.getElementById('low-stock').textContent = lowStockCount;
+        }
+
+        function renderProducts(filter = '') {
+            inventoryBody.innerHTML = '';
+            const filtered = products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()));
+
+            if (filtered.length === 0) {
+                document.getElementById('empty-state').classList.remove('hidden');
+            } else {
+                document.getElementById('empty-state').classList.add('hidden');
+            }
+
+            filtered.forEach((p, index) => {
+                const stockColor = p.stock <= 5 ? 'text-orange-600 bg-orange-100' : 'text-slate-600 bg-slate-100';
+                const row = document.createElement('tr');
+                row.className = "hover:bg-slate-50 transition-colors group";
+                row.innerHTML = `
+                    <td class="px-6 py-4">
+                        <p class="font-bold text-slate-800">${p.name}</p>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="text-[10px] font-bold uppercase px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                            ${p.category}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-right font-medium text-slate-600">
+                        Rs. ${Number(p.price).toLocaleString()}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="px-3 py-1 rounded-lg text-sm font-bold ${stockColor}">
+                            ${p.stock}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-right space-x-2">
+                        <button onclick="editProduct(${index})" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                        </button>
+                        <button onclick="deleteProduct(${index})" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </td>
+                `;
+                inventoryBody.appendChild(row);
+            });
+            updateDashboard();
+        }
+
+        // Form Submission
+        productForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const index = parseInt(editIndexInput.value);
+            const product = {
+                name: document.getElementById('p-name').value,
+                price: parseFloat(document.getElementById('p-price').value),
+                stock: parseInt(document.getElementById('p-stock').value),
+                category: document.getElementById('p-category').value
+            };
+
+            if (index === -1) {
+                products.unshift(product);
+                showToast("Product added successfully!");
+            } else {
+                products[index] = product;
+                showToast("Product updated successfully!");
+                resetForm();
+            }
+
+            saveToStorage();
+            renderProducts();
+            productForm.reset();
+        });
+
+        window.editProduct = (index) => {
+            const p = products[index];
+            document.getElementById('p-name').value = p.name;
+            document.getElementById('p-price').value = p.price;
+            document.getElementById('p-stock').value = p.stock;
+            document.getElementById('p-category').value = p.category;
+            editIndexInput.value = index;
+
+            formTitle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg> Update Product`;
+            submitBtn.textContent = "Update Product";
+            submitBtn.classList.replace('bg-emerald-600', 'bg-blue-600');
+            submitBtn.classList.replace('hover:bg-emerald-700', 'hover:bg-blue-700');
+            cancelBtn.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.deleteProduct = (index) => {
+            if (confirm(`Are you sure you want to delete "${products[index].name}"?`)) {
+                products.splice(index, 1);
+                saveToStorage();
+                renderProducts();
+                showToast("Product deleted");
+            }
+        };
+
+        function resetForm() {
+            editIndexInput.value = "-1";
+            formTitle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-60H6" />
+            </svg> Add New Product`;
+            submitBtn.textContent = "Save Product";
+            submitBtn.classList.replace('bg-blue-600', 'bg-emerald-600');
+            submitBtn.classList.replace('hover:bg-blue-700', 'hover:bg-emerald-700');
+            cancelBtn.classList.add('hidden');
+            productForm.reset();
+        }
+
+        cancelBtn.onclick = resetForm;
+
+        document.getElementById('search').addEventListener('input', (e) => {
+            renderProducts(e.target.value);
+        });
+
+        // Initialize
+        renderProducts();
+    </script>
+</body>
+</html>
